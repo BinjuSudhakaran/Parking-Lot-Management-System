@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ParkingLotManager 
 {
@@ -26,7 +27,21 @@ public class ParkingLotManager
 	}
 	public void parkVehicle(Vehicle vehicle) 
 	{
-		Optional <ParkingSlot>freeSlot=slots.stream().filter(v->v.getType().equals(vehicle.getType())&&v.isFree()).findFirst();
+		Optional<ParkingSlot> bookedSlot = slots.stream()
+		        .filter(s -> s.getVehicle().isPresent()
+		                  && s.getVehicle().get().getNumber().equals(vehicle.getNumber())
+		                  && s.isBooked()).findFirst();
+		if(bookedSlot.isPresent())
+		{
+			
+			bookedSlot.get().parkVehicletoSlot(vehicle);
+			bookedSlot.get().unBook();
+			System.out.println(vehicle.getType() + " parked at previously booked slot " + bookedSlot.get().getSlotId());
+			
+		}
+		else
+		{
+		Optional <ParkingSlot> freeSlot=slots.stream().filter(v->v.getType().equals(vehicle.getType())&&v.isFree()).findFirst();
 
 		if(freeSlot.isPresent())
 		{
@@ -39,6 +54,7 @@ public class ParkingLotManager
 			System.out.println("No slots Available");
 		}
 		
+		}
 	}
 	public void leaveSlot(String leaveNumber) throws Exception
 	{
@@ -56,10 +72,39 @@ public class ParkingLotManager
 	}
 	public void viewParkingStatus()
 	{
-		slots.forEach(s->{
+		/*slots.forEach(s->{
 			String status=s.isFree()?"Free":s.getVehicle().get().getNumber();
 			System.out.println("Slot " + s.getSlotId() +":"+ s.getType() +":"+ status);
-        });
+        });*/
+		
+		
+		 slots.forEach(s -> {
+		      String status;
+		      
+
+		    if (s.isBooked()) 
+		        {
+		    		String temp=s.getVehicle().map(v->v.getNumber()).orElse("Occupied");
+		        	
+		            status = "Booked for "+temp;
+		        } 
+		      
+		    else  if (!s.isFree()) 
+		        {
+		           status = s.getVehicle().map(v->v.getNumber()).orElse("Occupied");
+		        	
+		        } 
+		        
+		        else 
+		        {
+		            status = "Free";
+		        }
+
+		        System.out.println("Slot " + s.getSlotId() + " : " + s.getType() + " : " + status);
+		    });
+		
+		
+		
 	}
 	public void searchVehicle(String vehicleNumber) throws Exception
 	{
@@ -84,5 +129,21 @@ public class ParkingLotManager
         });
 		
 	}
+	public void bookSlot(Vehicle vehicle) 
+	{
+		Optional<ParkingSlot> freeSlot=slots.stream().filter(v->v.isFree()&&vehicle.getType().equals(v.getType())).findFirst();
+		
+		if(freeSlot.isPresent())
+		{
+			System.out.println("freeslot available at slot:"+freeSlot.get().getSlotId());
+			
+			freeSlot.get().book(vehicle);
+			
+			System.out.println(vehicle.getType() + " Booked at slot " + freeSlot.get().getSlotId());
+			
+	
+		}
+	}
+	
 }
 

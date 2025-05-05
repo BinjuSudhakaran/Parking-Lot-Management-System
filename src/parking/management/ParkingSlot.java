@@ -7,6 +7,7 @@ public class ParkingSlot
 	private final int slotId;
 	private final String type;
 	private Vehicle vehicle;
+	private boolean booked=false;
 	
 	public ParkingSlot(int slotId, String type) 
 	{
@@ -39,6 +40,27 @@ public class ParkingSlot
 		return Optional.ofNullable(vehicle);
 		
 	}
-	
-
+	public void bookVehicletoSlot(Vehicle vehicle) 
+	{
+		this.vehicle=vehicle;
+		
+	}
+	public void book(Vehicle vehicle)
+	{
+		
+		
+		this.booked=true;
+		
+		this.vehicle=vehicle;
+	}
+	public boolean isBooked()
+	{
+		return booked;
+		
+		
+	}
+public void unBook()
+{
+	this.booked=false;
+}
 }

@@ -16,7 +16,8 @@ public class ParkingMain {
 			System.out.println("3.View Parking Status");
 			System.out.println("4.Search Vehicle");
 			System.out.println("5.Group Parked Vehicle");
-			System.out.println("6.Exit");
+		    System.out.println("6.Book Slot");
+			System.out.println("7.Exit");
 			System.out.println("Select your choice");
 			int ch=sc.nextInt();
 			try
@@ -42,8 +43,16 @@ public class ParkingMain {
 					break;
 				case 5:manager.groupParkedVehicle();
 					break;
-				case 6:System.out.println("Exiting...");
-                   	break;
+				case 6:
+					System.out.println("Enter your vehicle(car/bike) ");
+					String bookType=sc.next();
+					System.out.println("Enter your vehicle number:");
+					String bookNumber=sc.next();
+					Vehicle vehicle1=bookType.equalsIgnoreCase("car")?new Car(bookNumber):new Bike(bookNumber);
+					manager.bookSlot(vehicle1);
+					break;
+				case 7:System.out.println("Exiting...");
+               			break;
                 default:
                     System.out.println("Invalid option.");	
 			}
