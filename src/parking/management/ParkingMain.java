@@ -20,18 +20,18 @@ public class ParkingMain {
 			System.out.println("7.Exit");
 			System.out.println("Select your choice");
 			int ch=sc.nextInt();
-			try
-			{
+			//try
+			//{
 			switch(ch)
 			{
-				case 1:System.out.println("Enter type of vehicle(car/bike");
+				case 1:System.out.println("Enter type of vehicle(car/bike)");
 					String type=sc.next();
 					System.out.println("Enter vehicle number:");
 					String number=sc.next();
 					Vehicle vehicle=type.equalsIgnoreCase("car")?new Car(number):new Bike(number);
 					manager.parkVehicle(vehicle);
 					break;
-				case 2:System.out.println("Enter the number of vehicle to leave: ");
+				case 2:System.out.println("EntebrVehicle number ");
 					String leaveNumber=sc.next();
 					manager.leaveSlot(leaveNumber);
 					break;
@@ -56,11 +56,11 @@ public class ParkingMain {
                 default:
                     System.out.println("Invalid option.");	
 			}
-			}
-		catch(Exception e)
-			{
-			System.out.println("Error");
-			}
+			//}
+//		catch(Exception e)
+//			{
+//			System.out.println("Error");
+//			}
 	}
 
 }
